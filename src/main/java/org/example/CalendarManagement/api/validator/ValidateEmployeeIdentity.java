@@ -3,9 +3,11 @@ package org.example.CalendarManagement.api.validator;
 import org.example.CalendarManagement.calendarpersistence.model.Employee;
 import org.example.CalendarManagement.calendarpersistence.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class ValidateEmployeeIdentity {
 
     @Autowired
@@ -28,21 +30,4 @@ public class ValidateEmployeeIdentity {
       return validateResponse;
     }
 
-    public ValidateResponse checkEmployeeEmail(String email)
-    {
-        ValidateResponse validateResponse = null;
-
-        Optional<Employee> responseFromDb = employeeRepository.findByEmail(email);
-
-        if(responseFromDb.isPresent())
-        {
-            validateResponse = new ValidateResponse("Employee Exists" , true);
-        }
-        else
-        {
-            validateResponse = new ValidateResponse("Employee does not exists" , false);
-        }
-
-        return validateResponse;
-    }
 }

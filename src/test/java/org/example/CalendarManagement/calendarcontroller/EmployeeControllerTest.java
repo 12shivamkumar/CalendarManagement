@@ -15,9 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,60 +92,37 @@ class EmployeeControllerTest {
     @Test
     public void employeeControllerTest_removeEmployeeFailedIdValidation(){
         String id = "xyz-123";
-        String findBy = "id";
         Mockito.when(validateEmployeeIdentity.checkEmployeeId(id)).thenReturn(new ValidateResponse("Employee does not exists", false));
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(id);
-        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(id,findBy);
+        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(id);
         assertNotNull(responseEntity);
         assertEquals(400, responseEntity.getStatusCodeValue());
-    }
-    @Test
-    public void employeeControllerTest_removeEmployeeFailedEmailValidation(){
-        String email = "tushar@xyz.com";
-        String findBy = "email";
-        Mockito.when(validateEmployeeIdentity.checkEmployeeEmail(email)).
-                thenReturn(new ValidateResponse("Employee does not exists" , false));
-        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(email);
-        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(email,findBy);
-        assertNotNull(responseEntity);
-        assertEquals(400, responseEntity.getStatusCodeValue());
-
-    }
-    @Test
-    public void employeeControllerTest_removeEmployeeIncorrectFindByParameter(){
-        String email = "tushar@xyz.com";
-        String findBy = "IncorrectParameter";
-        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(email,findBy);
-        assertNotNull(responseEntity);
-        assertEquals(400,responseEntity.getStatusCodeValue());
     }
 
     @Test
     public void employeeControllerTest_removeEmployeeByIdSuccessfully(){
         String id = "xyz-123";
-        String findBy = "id";
-        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(id);
         Mockito.when(validateEmployeeIdentity.checkEmployeeId(id)).
                 thenReturn(new ValidateResponse("Employee Exists", true));
-        Mockito.when(employeeFacade.removeEmployee(Mockito.any(RemoveEmployeeDataRequest.class),Mockito.anyString())).
-                thenReturn(new Employee(id,"tushar",2,"tushar@xyz.com"));
-        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(id,findBy);
+        Mockito.when(employeeFacade.removeEmployee(Mockito.any(RemoveEmployeeDataRequest.class))).
+                thenReturn(new Response(null, new Employee(id,"tushar",2,"tushar@xyz.com")));
+        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(id);
         assertNotNull(responseEntity);
         assertEquals(200,responseEntity.getStatusCodeValue());
     }
 
     @Test
-    public void employeeControllerTest_removeEmployeeByEmailSuccessfully(){
-        String email = "tushar@xyz.com";
-        String findBy = "email";
-        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(email);
-        Mockito.when(validateEmployeeIdentity.checkEmployeeEmail(email)).
-                thenReturn(new ValidateResponse("Employee Exists", true));
-        Mockito.when(employeeFacade.removeEmployee(Mockito.any(RemoveEmployeeDataRequest.class),Mockito.anyString())).
-                thenReturn(new Employee("xyz-12","tushar",2,email));
-        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(email,findBy);
-        assertNotNull(responseEntity);
-        assertEquals(200,responseEntity.getStatusCodeValue());
-    }
+    public void employeeControllerTest_removeEmployeeFailedDueToThriftException()
+    {
+        String id = "xyz-123";
 
+        Mockito.when(validateEmployeeIdentity.checkEmployeeId(id)).
+                thenReturn(new ValidateResponse("Employee Exists", true));
+        Mockito.when(employeeFacade.removeEmployee(Mockito.any(RemoveEmployeeDataRequest.class))).
+                thenThrow(RuntimeException.class);
+
+        ResponseEntity<Response> responseEntity = employeeController.removeEmployee(id);
+        assertNotNull(responseEntity);
+        assertEquals(500 , responseEntity.getStatusCodeValue());
+    }
 }

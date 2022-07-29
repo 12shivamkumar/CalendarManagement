@@ -1,10 +1,14 @@
 package org.example.CalendarManagement.calendarcontroller;
 
 
+import org.apache.thrift.TException;
 import org.example.CalendarManagement.api.Response;
 import org.example.CalendarManagement.api.request.AddEmployeeDataRequest;
+//import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
+//import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
 import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
 import org.example.CalendarManagement.api.validator.ValidateEmployeeEmail;
+//import org.example.CalendarManagement.api.validator.ValidateEmployeeIdentity;
 import org.example.CalendarManagement.api.validator.ValidateEmployeeIdentity;
 import org.example.CalendarManagement.api.validator.ValidateOfficeId;
 import org.example.CalendarManagement.api.validator.ValidateResponse;
@@ -16,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/employee")
@@ -55,29 +60,23 @@ public class EmployeeController {
         return new ResponseEntity<Response>(addEmployeeResponse,HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> removeEmployee(@PathVariable String identity,@RequestParam String findBy){
-
+    public ResponseEntity<Response> removeEmployee(@NotNull @PathVariable(name = "id") String employeeId)  {
         ValidateResponse validateResponseForEmployeeIdentity= null;
-        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(identity);
-        if(findBy.equals("id")){
-            validateResponseForEmployeeIdentity = validateEmployeeIdentity.checkEmployeeId(identity);
-
-        }
-        else if(findBy.equals("email")){
-            validateResponseForEmployeeIdentity = validateEmployeeIdentity.checkEmployeeEmail(identity);
-        }
-        else{
-            validateResponseForEmployeeIdentity = new ValidateResponse("find by has to be email or id",false);
-        }
+        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(employeeId);
+        validateResponseForEmployeeIdentity = validateEmployeeIdentity.checkEmployeeId(employeeId);
 
         if(!validateResponseForEmployeeIdentity.isValid()){
             return new ResponseEntity<Response>(new Response(validateResponseForEmployeeIdentity.getMessage(),null),HttpStatus.BAD_REQUEST);
         }
         else{
-            Employee deletedEmployee = employeeFacade.removeEmployee(removeEmployeeDataRequest,findBy);
-            return new ResponseEntity<Response>(new Response(null,deletedEmployee),HttpStatus.OK);
+            try {
+                Response deletedEmployeeResponse = employeeFacade.removeEmployee(removeEmployeeDataRequest);
+                return new ResponseEntity<Response>(deletedEmployeeResponse, HttpStatus.OK);
+            }catch (RuntimeException exception)
+            {
+                return  new ResponseEntity<>(new Response(exception.getMessage() ,null) , HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
     }
-
 }

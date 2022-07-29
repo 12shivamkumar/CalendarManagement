@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService implements  EmployeeInterface
@@ -24,16 +25,9 @@ public class EmployeeService implements  EmployeeInterface
 
     @Override
     public Employee removeEmployeeById(String id) {
-        return employeeRepository.deletedById(id);
+        Optional<Employee> employee = employeeRepository.findById(id);
+        employee.get().setDeleted(true);
+        employeeRepository.save(employee.get());
+        return employee.get();
     }
-
-    @Override
-    public Employee removeEmployeeByEmail(String email) {
-        return employeeRepository.deleteByEmail(email);
-    }
-
-    /*@Override
-    public List<String> cancelMeetingsOfDeletedEmployee(String id){
-        return null;
-    }*/
 }
