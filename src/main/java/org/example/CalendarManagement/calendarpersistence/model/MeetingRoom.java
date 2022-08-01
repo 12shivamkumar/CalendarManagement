@@ -20,7 +20,7 @@ public class MeetingRoom {
     private String roomName;
 
     @Column(name = "office_id")
-    @Min(value = 0,message = "Room must belong to an office")
+    @Min(value = 0,message = "room must belong to an office")
     private int officeId;
 
     @Column(name = "is_open")

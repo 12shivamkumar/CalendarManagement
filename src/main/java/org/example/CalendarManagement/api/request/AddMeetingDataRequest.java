@@ -1,6 +1,7 @@
 package org.example.CalendarManagement.api.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.*;
@@ -22,6 +23,7 @@ public class AddMeetingDataRequest {
     @NotNull(message = "there must be at least one employee")
     private List<@NotEmpty @Size(min = 1, max=7) String> listOfEmployeeId;
     @NotNull(message = "date of meeting cannot be null")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfMeeting;
     @NotNull(message = "meeting start time cannot be null")
     private LocalTime startTime;

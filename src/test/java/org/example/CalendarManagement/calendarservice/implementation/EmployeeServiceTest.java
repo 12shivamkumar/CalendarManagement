@@ -42,7 +42,7 @@ class EmployeeServiceTest {
         int officeID = 101;
         boolean thrown = false;
         Employee employeeWithInvalidArguments = new Employee(employeeId, name, officeID, null);
-        DataAccessException dataAccessException = new DataAccessException("Data cannot be accessed") {
+        DataAccessException dataAccessException = new DataAccessException("data cannot be accessed") {
             @Override
             public String getMessage() {
                 return super.getMessage();
@@ -69,7 +69,7 @@ class EmployeeServiceTest {
     @Test
     public void removeEmployeeByIdTest_employeeRemoveFailed() {
         String id = "XYZ-123";
-        DataAccessException dataAccessException = new DataAccessException("Data cannot be accessed") {
+        DataAccessException dataAccessException = new DataAccessException("data cannot be accessed") {
             @Override
             public String getMessage() {
                 return super.getMessage();

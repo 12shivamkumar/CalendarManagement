@@ -93,8 +93,8 @@ public class MeetingControllerIT extends BaseIntegrationTest
     }
 
     @Test
-    @DisplayName("Meeting is Not Productive with seven employees , fails validation")
-    public void scheduleMeetingFailTest_roomIsNotGiven() throws JsonProcessingException {
+    @DisplayName("meeting is not productive with seven employees , fails validation")
+    public void scheduleMeetingFailTest_roomIsNotGiven_WithSevenEmployees() throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         LocalDate dateOfMeeting = LocalDate.of(2022,8,26);
@@ -118,7 +118,7 @@ public class MeetingControllerIT extends BaseIntegrationTest
     }
     
     @Test
-    public void scheduleMeetingFailTest_internalServerError() throws JsonProcessingException {
+    public void scheduleMeetingFailTest_thriftServerFailedOnMeetingSaving() throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         LocalDate dateOfMeeting = LocalDate.of(2022,8,26);
@@ -141,7 +141,7 @@ public class MeetingControllerIT extends BaseIntegrationTest
     }
 
     @Test
-    public void getMeetingsOfEmployeeTestSuccess(){
+    public void getMeetingsOfEmployeeTest_Success(){
         String employeeId = "abc-13";
         String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
@@ -154,7 +154,7 @@ public class MeetingControllerIT extends BaseIntegrationTest
     }
 
     @Test
-    public void getMeetingsOfEmployeeTestFail_failedValidation() {
+    public void getMeetingsOfEmployeeTestFail_employeeNotExists() {
         String employeeId = "abc-20";
         String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
@@ -163,32 +163,11 @@ public class MeetingControllerIT extends BaseIntegrationTest
 
     }
     @Test
-    public void getMeetingsOfEmployeeTestFail_internalServerError() {
+    public void getMeetingsOfEmployeeTestFail_thriftErrorOnMeetingSaving() {
         String employeeId = "abc-15";
         String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
         assertEquals(500,responseEntity.getStatusCodeValue());
     }
-
-//    @Test
-//    public void getMeetingsOfEmployeeTestFail_invalidPayload(){
-//        String employeeId = "abc-$3";
-//        String date = LocalDate.of(2022,8,2).toString();
-//        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
-//        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
-//        System.out.println(responseEntity.getBody().getError());
-//        assertEquals(400,responseEntity.getStatusCodeValue());
-//    }
-//
-//    @Test
-//    public void getMeetingsOfEmployeeTestFail_invalidDate() {
-//        String employeeId = "abc-12";
-//        String date = "2022-08";
-//        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
-//        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
-//        System.out.println(responseEntity.getBody().getError());
-//        assertEquals(400,responseEntity.getStatusCodeValue());
-//    }
-
 }

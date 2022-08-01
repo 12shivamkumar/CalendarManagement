@@ -8,23 +8,21 @@ import javax.validation.constraints.Size;
 
 public class AddEmployeeDataRequest {
 
-    @NotNull(message = "Employee Id is must")
-   // @Pattern(regexp = "^([cap])-([0-9])$")
+    @NotNull(message = "employee id is must")
     @Size(min = 5 , message = "please provide correct employee id")
     private String employeeId;
 
-    @NotNull(message = "Employee Name cannot be Null")
+    @NotNull(message = "employee name cannot be null")
     @Size(min = 2 , message = "please provide correct name")
     private String name;
 
 
-    @NotNull(message = "Employee Email Cannot be Null")
+    @NotNull(message = "employee email cannot be null")
     @Size(min = 10 , message = "please provide correct email")
-   // @Pattern(regexp = "^[a-zA-Z0-9_\\-]+@[cap]+\\.[com]$")
     private String email;
 
-    @NotNull(message = "Employee must belongs to an office")
-    @Min(value = 1 , message = "Employee must belong to any office")
+    @NotNull(message = "employee must belongs to an office")
+    @Min(value = 1 , message = "employee must belong to any office")
     private int officeId;
 
     public AddEmployeeDataRequest(String employeeId, String name, String email, int officeId) {

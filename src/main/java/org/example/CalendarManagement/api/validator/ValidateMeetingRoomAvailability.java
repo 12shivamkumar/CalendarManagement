@@ -34,7 +34,7 @@ public class ValidateMeetingRoomAvailability {
 
             if(!meetingRoomId.isPresent())
             {
-                response = new ValidateResponse("No Meeting room is available", false);
+                response = new ValidateResponse("no meeting room is available", false);
                 return response;
             }
             response = new ValidateResponse(meetingRoomId.get()+"", true);
@@ -46,7 +46,7 @@ public class ValidateMeetingRoomAvailability {
 
             if(!meetingRoomAvailableResponse)
             {
-                response = new ValidateResponse("Given Meeting room is not available",false);
+                response = new ValidateResponse("given meeting room is not available",false);
                 return response;
             }
             Optional<MeetingRoom> meetingRoom = meetingRoomRepository.findByName(addMeetingDataRequest.getRoomName().get());

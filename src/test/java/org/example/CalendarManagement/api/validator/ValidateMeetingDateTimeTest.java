@@ -28,8 +28,8 @@ class ValidateMeetingDateTimeTest {
     @Test
     public void validCurrentDate()
     {
-        LocalDate date = LocalDate.of(2022,8,1);
-        LocalTime startTime = LocalTime.of(19,30);
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(16,30);
         ValidateResponse validateResponse = validateMeetingDateTime.checkMeetingDateTime(date , startTime);
         assertNotNull(validateResponse);
         assertTrue(validateResponse.isValid());

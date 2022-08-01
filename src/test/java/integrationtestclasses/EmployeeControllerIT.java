@@ -57,34 +57,8 @@ public class EmployeeControllerIT extends BaseIntegrationTest {
 
         assertEquals(400, responseEntity.getStatusCodeValue());
         assertNotNull(responseEntity.getBody());
-        assertEquals("Office Information is Not Present" , responseEntity.getBody().getError());
+        assertEquals("office information is not present" , responseEntity.getBody().getError());
     }
-
-//    @Test
-//    public void addEmployeeFailedTestWrongInput() throws JsonProcessingException {
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        AddEmployeeDataRequest request =
-//                new AddEmployeeDataRequest("xyz-12", "tushar", "tushar@xyz.com", 2);
-//        Employee employee = new Employee("xyz-12", "tushar", 2, "tushar@xyz.com");
-//        String employeeRequestString = objectMapper.writeValueAsString(request);
-//        System.out.println(employeeRequestString);
-//
-//        String wrongPayload = "{\"employeeId\":\"xyz-12\",\"email\":\"tushar@xyz.com\",\"officeId\":2}";
-//
-//        System.out.println(wrongPayload);
-//        HttpEntity<String> httpEntity =
-//                new HttpEntity<String>(wrongPayload, headers);
-//
-//        ResponseEntity<Response> responseEntity =
-//                restTemplate.exchange(createURLWithPort("/employee"), HttpMethod.POST, httpEntity,
-//                        Response.class);
-//        assertEquals(400, responseEntity.getStatusCodeValue());
-//        assertNotNull(responseEntity.getBody());
-//        System.out.println(responseEntity.getBody().getError());
-//    }
-
 
     @Test
     public void removeEmployeeSuccessTest() throws JsonProcessingException{

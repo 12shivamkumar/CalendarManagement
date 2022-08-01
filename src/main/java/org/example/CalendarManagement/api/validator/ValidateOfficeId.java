@@ -23,12 +23,12 @@ public class ValidateOfficeId {
 
         if(responseFromDb.isPresent())
         {
-            validateResponse = new ValidateResponse("Office Information is Present" , true);
+            validateResponse = new ValidateResponse("office information is present" , true);
 
         }
         else
         {
-            validateResponse = new ValidateResponse("Office Information is Not Present" , false);
+            validateResponse = new ValidateResponse("office information is not present" , false);
         }
         return validateResponse;
     }

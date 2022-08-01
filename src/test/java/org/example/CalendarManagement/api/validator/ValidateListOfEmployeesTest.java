@@ -38,22 +38,22 @@ class ValidateListOfEmployeesTest {
         ValidateResponse validateResponse = validateListOfEmployees.checkIfEmployeeExistInSameOffice(listOfEmployee,2 ,"abc-11");
         assertNotNull(validateResponse);
         assertFalse(validateResponse.isValid());
-        assertEquals(" Duplicate employee found",validateResponse.getMessage());
+        assertEquals(" duplicate employee found",validateResponse.getMessage());
     }
     @Test
     public void employeeNotInDatabase(){
         List<String> listOfEmployee = Arrays.asList("abc-12", "abc-13", "abc-14","abc-8");
-        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("Employee Not in Db",false));
+        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee not in Db",false));
         ValidateResponse validateResponse = validateListOfEmployees.checkIfEmployeeExistInSameOffice(listOfEmployee,2,"abc-11");
         assertNotNull(validateResponse);
         assertFalse(validateResponse.isValid());
-        assertEquals("Employee Not in Db",validateResponse.getMessage());
+        assertEquals("employee not in Db",validateResponse.getMessage());
     }
 
     @Test
     public void employeeExistAndInSameOffice(){
         List<String> listOfEmployee = Arrays.asList("abc-12", "abc-13", "abc-14");
-        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("Employee in Db",true));
+        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee in Db",true));
         Mockito.when(employeeRepository.countByIdIn(Mockito.anyList())).thenReturn(3);
         Mockito.when(employeeRepository.findOfficeByEmployeeId(Mockito.anyList())).thenReturn(Arrays.asList(2));
         ValidateResponse validateResponse = validateListOfEmployees.checkIfEmployeeExistInSameOffice(listOfEmployee,2,"abc-11");
@@ -63,7 +63,7 @@ class ValidateListOfEmployeesTest {
     @Test
     public void employeeExistAndNotInOffice(){
         List<String> listOfEmployee = Arrays.asList("abc-12", "abc-13", "abc-14");
-        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("Employee in Db",true));
+        Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee in Db",true));
         Mockito.when(employeeRepository.countByIdIn(Mockito.anyList())).thenReturn(3);
         Mockito.when(employeeRepository.findOfficeByEmployeeId(Mockito.anyList())).thenReturn(Arrays.asList(2,3));
         ValidateResponse validateResponse = validateListOfEmployees.checkIfEmployeeExistInSameOffice(listOfEmployee,2, "abc-11");

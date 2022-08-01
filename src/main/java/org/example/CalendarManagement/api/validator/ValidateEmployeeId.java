@@ -23,11 +23,11 @@ public class ValidateEmployeeId {
 
         if(responseFromDb.isPresent())
         {
-            validateResponse = new ValidateResponse( "Employee Exists" , true);
+            validateResponse = new ValidateResponse( "employee exists" , true);
         }
         else
         {
-            validateResponse = new ValidateResponse(id+" Employee does not exists", false);
+            validateResponse = new ValidateResponse(id+" employee does not exists", false);
         }
       return validateResponse;
     }

@@ -15,10 +15,10 @@ public class ValidateEmployeeEmail {
         ValidateResponse responseForEmployeeEmail = null;
         Optional<Employee> employee =employeeRepository.findByEmail(email);
         if(employee.isPresent()){
-            responseForEmployeeEmail =new ValidateResponse("Employee with this email exists",false);
+            responseForEmployeeEmail =new ValidateResponse("employee with this email exists",false);
         }
         else {
-            responseForEmployeeEmail = new ValidateResponse("Employee with this email does not exist",true);
+            responseForEmployeeEmail = new ValidateResponse("employee with this email does not exist",true);
         }
         return responseForEmployeeEmail;
     }

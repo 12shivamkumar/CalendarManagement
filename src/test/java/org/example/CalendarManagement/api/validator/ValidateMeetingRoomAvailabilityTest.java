@@ -55,7 +55,7 @@ class ValidateMeetingRoomAvailabilityTest
         ValidateResponse validateResponse = validateMeetingRoomAvailability.checkMeetingRoomAvailability(addMeetingDataRequest);
         assertNotNull(validateResponse);
         assertFalse(validateResponse.isValid());
-        assertEquals("No Meeting room is available", validateResponse.getMessage());
+        assertEquals("no meeting room is available", validateResponse.getMessage());
     }
 
     @Test
@@ -76,7 +76,7 @@ class ValidateMeetingRoomAvailabilityTest
         ValidateResponse validateResponse = validateMeetingRoomAvailability.checkMeetingRoomAvailability(addMeetingDataRequest);
         assertNotNull(validateResponse);
         assertFalse(validateResponse.isValid());
-        assertEquals( "Given Meeting room is not available" , validateResponse.getMessage());
+        assertEquals( "given meeting room is not available" , validateResponse.getMessage());
     }
 
     @Test

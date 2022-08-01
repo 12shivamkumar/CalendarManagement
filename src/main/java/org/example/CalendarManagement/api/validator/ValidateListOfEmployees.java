@@ -26,7 +26,7 @@ public class ValidateListOfEmployees {
 
         Set<String> listOfEmployeeDuplicateCheck = new HashSet<>(listOfEmployeeId);
         if(listOfEmployeeDuplicateCheck.size()!=listOfEmployeeId.size()){
-            return new ValidateResponse(" Duplicate employee found",false);
+            return new ValidateResponse(" duplicate employee found",false);
         }
         for(String employeeId:listOfEmployeeId){
             ValidateResponse validateResponse = validateEmployeeId.checkEmployeeId(employeeId);
@@ -42,10 +42,10 @@ public class ValidateListOfEmployees {
             Set<Integer> listOfOfficeId = new HashSet<>(employeeRepository.findOfficeByEmployeeId(listOfEmployeeId));
 
             if(listOfOfficeId.size()== 1 && listOfOfficeId.contains(officeId)){
-                validateResponse = new  ValidateResponse(" Employees exist in DB and belong to same office",true);
+                validateResponse = new  ValidateResponse(" employees exist in DB and belong to same office",true);
             }
             else {
-                validateResponse = new  ValidateResponse("Employee working in different offices",false);
+                validateResponse = new  ValidateResponse("employee working in different offices",false);
             }
         }
       return validateResponse;
