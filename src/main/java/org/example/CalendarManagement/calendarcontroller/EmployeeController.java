@@ -1,7 +1,6 @@
 package org.example.CalendarManagement.calendarcontroller;
 
 
-import org.apache.thrift.TException;
 import org.example.CalendarManagement.api.Response;
 import org.example.CalendarManagement.api.request.AddEmployeeDataRequest;
 //import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
@@ -9,7 +8,7 @@ import org.example.CalendarManagement.api.request.AddEmployeeDataRequest;
 import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
 import org.example.CalendarManagement.api.validator.ValidateEmployeeEmail;
 //import org.example.CalendarManagement.api.validator.ValidateEmployeeIdentity;
-import org.example.CalendarManagement.api.validator.ValidateEmployeeIdentity;
+import org.example.CalendarManagement.api.validator.ValidateEmployeeId;
 import org.example.CalendarManagement.api.validator.ValidateOfficeId;
 import org.example.CalendarManagement.api.validator.ValidateResponse;
 import org.example.CalendarManagement.calendarfacade.EmployeeFacade;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/employee")
@@ -32,7 +32,7 @@ public class EmployeeController {
     ValidateEmployeeEmail validateEmployeeEmail;
 
     @Autowired
-    ValidateEmployeeIdentity validateEmployeeIdentity;
+    ValidateEmployeeId validateEmployeeId;
 
     @Autowired
     EmployeeFacade employeeFacade;
@@ -40,14 +40,21 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<Response> saveEmployee(@Valid @RequestBody AddEmployeeDataRequest request)
     {
+          ValidateResponse validateResponseEmployeeIdExistsInDb =  validateEmployeeId.checkEmployeeId(request.getEmployeeId());
+
+          if(validateResponseEmployeeIdExistsInDb.isValid())
+          {
+              Response addEmployeeResponse = new Response(validateResponseEmployeeIdExistsInDb.getMessage(), null);
+              return new ResponseEntity<Response>(addEmployeeResponse, HttpStatus.BAD_REQUEST);
+          }
 
         ValidateResponse validateResponseEmployeeEmailDuplicate = validateEmployeeEmail.checkEmployeeEmailExist(request.getEmail());
-
 
         if(!validateResponseEmployeeEmailDuplicate.isValid()) {
             Response addEmployeeResponse = new Response(validateResponseEmployeeEmailDuplicate.getMessage(), null);
             return new ResponseEntity<Response>(addEmployeeResponse, HttpStatus.BAD_REQUEST);
         }
+
         ValidateResponse validationResponseOfficeIdInDb = validateOfficeId.checkOfficeId(request.getOfficeId());
 
         if(!validationResponseOfficeIdInDb.isValid()){
@@ -60,10 +67,11 @@ public class EmployeeController {
         return new ResponseEntity<Response>(addEmployeeResponse,HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> removeEmployee(@NotNull @PathVariable(name = "id") String employeeId)  {
+    public ResponseEntity<Response> removeEmployee(@Valid @PathVariable(name = "id") String employeeId)  {
+
         ValidateResponse validateResponseForEmployeeIdentity= null;
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(employeeId);
-        validateResponseForEmployeeIdentity = validateEmployeeIdentity.checkEmployeeId(employeeId);
+        validateResponseForEmployeeIdentity = validateEmployeeId.checkEmployeeId(employeeId);
 
         if(!validateResponseForEmployeeIdentity.isValid()){
             return new ResponseEntity<Response>(new Response(validateResponseForEmployeeIdentity.getMessage(),null),HttpStatus.BAD_REQUEST);

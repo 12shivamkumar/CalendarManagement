@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class ValidateEmployeeIdentity {
+public class ValidateEmployeeId {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -16,6 +16,8 @@ public class ValidateEmployeeIdentity {
     public ValidateResponse checkEmployeeId(String id)
     {
         ValidateResponse validateResponse = null;
+        if(id.length()<5)
+           return new ValidateResponse("please provide correct employee id" , false);
 
         Optional<Employee> responseFromDb = employeeRepository.findById(id);
 

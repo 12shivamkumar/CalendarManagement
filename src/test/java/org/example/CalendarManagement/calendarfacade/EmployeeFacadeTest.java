@@ -9,7 +9,8 @@ import org.example.CalendarManagement.api.request.RemoveEmployeeDataRequest;
 import org.example.CalendarManagement.calendarpersistence.model.Employee;
 import org.example.CalendarManagement.calendarservice.implementation.EmployeeService;
 //import org.example.CalendarManagement.thriftclients.implementation.Client;
-import org.example.CalendarManagement.thriftclients.implementation.ThriftMeetingServiceClientImpl;
+import org.example.CalendarManagement.thriftclients.implementation.MeetingServiceClientImpl;
+import org.example.CalendarManagement.thriftclients.interfaces.MeetingServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +31,10 @@ public class EmployeeFacadeTest {
     EmployeeFacade employeeFacade;
 
     @Mock
-    ThriftMeetingServiceClientImpl client;
+    MeetingServiceClient client;
 
     @Test
-    public void employeeFacadeTest_employeeSavedInRepository(){
+    public void employeeSavedInRepository(){
         String employeeId = "CAP-1";
         String email = "s@cap.com";
         String name = "xyz";
@@ -47,7 +48,7 @@ public class EmployeeFacadeTest {
     }
 
     @Test
-    public void employeeFacadeTest_employeeRemovedByIdSuccessfully() throws TException {
+    public void employeeRemovedByIdSuccessfully() throws TException {
         String id = "xyz-123";
 
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(id);
@@ -66,24 +67,24 @@ public class EmployeeFacadeTest {
 
 
     @Test
-    public void employeeFacadeTest_removedEmployeeMeetingCancelFail() throws TException {
+    public void removedEmployeeMeetingCancelFail() throws TException {
         String id = "xyz-123";
         String findBy = "id";
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(id);
         Mockito.when(employeeService.removeEmployeeById(id)).
                 thenReturn(new Employee(id, "tushar", 1, "tushar@gmail.com"));
-        Mockito.when(client.cancelMeetingForRemovedEmployee(id)).thenThrow(TException.class);
+        Mockito.when(client.cancelMeetingForRemovedEmployee(id)).thenThrow(RuntimeException.class);
         Assertions.assertThrows(RuntimeException.class , () -> employeeFacade.removeEmployee(removeEmployeeDataRequest));
     }
 
     @Test
-    public void  employeeFacadeTest_removedEmployeeUpdateStatusFail() throws TException {
+    public void  removedEmployeeUpdateStatusFail() throws TException {
         String id = "xyz-123";
         String findBy = "id";
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest(id);
         Mockito.when(employeeService.removeEmployeeById(id)).
                 thenReturn(new Employee(id, "tushar", 1, "tushar@gmail.com"));
-        Mockito.when(client.updateStatusForRemovedEmployee(id)).thenThrow(TException.class);
+        Mockito.when(client.updateStatusForRemovedEmployee(id)).thenThrow(RuntimeException.class);
         Assertions.assertThrows(RuntimeException.class , () -> employeeFacade.removeEmployee(removeEmployeeDataRequest));
     }
 }

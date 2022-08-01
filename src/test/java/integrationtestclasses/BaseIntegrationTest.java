@@ -1,7 +1,6 @@
 package integrationtestclasses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import integrationtestclasses.config.ThriftMeetingServiceClientImpl;
 import org.example.CalendarManagement.CalendarManagementApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,10 +12,10 @@ import integrationtestclasses.config.MySqlConfiguration;
 //import integrationtestclasses.testclasses.PopulateDatabase;
 
 
-@SpringBootTest(classes = { MySqlConfiguration.class,CalendarManagementApplication.class, ThriftMeetingServiceClientImpl.class},
+@SpringBootTest(classes = { MySqlConfiguration.class,CalendarManagementApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class BaseIntegrationTestClass {
+public class BaseIntegrationTest {
     @LocalServerPort
     private int port;
 

@@ -16,23 +16,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidateEmployeeIdentityTest {
+public class ValidateEmployeeIdTest {
 
     @Mock
     private EmployeeRepository employeeRepository;
 
     @InjectMocks
-    private ValidateEmployeeIdentity validateEmployeeIdentity;
+    private ValidateEmployeeId validateEmployeeId;
 
     @Test
-    public void validateEmployeeIdentityTest_employeeIdExists(){
+    public void employeeIdIllegal(){
+        RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest("XYZ");
+
+        ValidateResponse validateResponse = validateEmployeeId.checkEmployeeId(removeEmployeeDataRequest.getEmployeeId());
+        Assertions.assertNotNull(validateResponse);
+        Assertions.assertFalse(validateResponse.isValid());
+    }
+
+    @Test
+    public void employeeIdExists(){
 
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest("XYZ-123");
 
         Mockito.when(employeeRepository.findById(removeEmployeeDataRequest.getEmployeeId())).
                 thenReturn(Optional.of(new Employee(removeEmployeeDataRequest.getEmployeeId(), "shiavm", 1, "shivam@xyz.com")));
 
-        ValidateResponse validateResponse = validateEmployeeIdentity.checkEmployeeId(removeEmployeeDataRequest.getEmployeeId());
+        ValidateResponse validateResponse = validateEmployeeId.checkEmployeeId(removeEmployeeDataRequest.getEmployeeId());
 
         Assertions.assertNotNull(validateResponse);
 
@@ -40,14 +49,14 @@ public class ValidateEmployeeIdentityTest {
     }
 
     @Test
-    public void validateEmployeeIdentityTest_employeeIdNotExists(){
+    public void employeeIdNotExists(){
 
         RemoveEmployeeDataRequest removeEmployeeDataRequest = new RemoveEmployeeDataRequest("XYZ-123");
 
         Mockito.when(employeeRepository.findById(removeEmployeeDataRequest.getEmployeeId())).
                 thenReturn(Optional.empty());
 
-        ValidateResponse validateResponse = validateEmployeeIdentity.checkEmployeeId(removeEmployeeDataRequest.getEmployeeId());
+        ValidateResponse validateResponse = validateEmployeeId.checkEmployeeId(removeEmployeeDataRequest.getEmployeeId());
 
         Assertions.assertNotNull(validateResponse);
 
