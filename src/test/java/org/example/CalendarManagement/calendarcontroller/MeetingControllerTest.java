@@ -341,8 +341,9 @@ class MeetingControllerTest {
     @Test
     public void getMeetingTestFailedValidation(){
         String employeeId ="xyz-12";
+        LocalDate date = LocalDate.of(2022,8,7);
         Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee does not exist",false));
-        ResponseEntity responseEntity = meetingController.getMeetingsOfEmployee(employeeId);
+        ResponseEntity responseEntity = meetingController.getMeetingsOfEmployee(employeeId,date);
         assertNotNull(responseEntity);
         assertEquals(400,responseEntity.getStatusCodeValue());
         Response invalidRequestResponse = (Response) responseEntity.getBody();
@@ -351,14 +352,16 @@ class MeetingControllerTest {
     @Test
     public void getMeetingsTestFailedDueToThriftException(){
         String employeeId = "xyz-25";
+        LocalDate date = LocalDate.of(2022,8,7);
         Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee exist",true));
-        Mockito.when(meetingFacade.getMeetings(employeeId)).thenThrow(RuntimeException.class);
-        assertThrows(RuntimeException.class, ()->meetingController.getMeetingsOfEmployee(employeeId));
+        Mockito.when(meetingFacade.getMeetings(Mockito.anyString(),Mockito.any(LocalDate.class))).thenThrow(RuntimeException.class);
+        assertThrows(RuntimeException.class, ()->meetingController.getMeetingsOfEmployee(employeeId,date));
     }
 
     @Test
     public void getMeetingsTestSucess(){
         String employeeId = "xyz-25";
+        LocalDate date = LocalDate.of(2022,8,07);
         List<EmployeeMeetingDetails> employeeMeetingDetails = new ArrayList<>();
         employeeMeetingDetails.add(0, new EmployeeMeetingDetails(
                 2,
@@ -374,8 +377,8 @@ class MeetingControllerTest {
         ));
         Response responseFromFacade = new Response(null,employeeMeetingDetails);
         Mockito.when(validateEmployeeId.checkEmployeeId(Mockito.anyString())).thenReturn(new ValidateResponse("employee exist",true));
-        Mockito.when(meetingFacade.getMeetings(employeeId)).thenReturn(responseFromFacade);
-        ResponseEntity responseFromGetMeetings = meetingController.getMeetingsOfEmployee(employeeId);
+        Mockito.when(meetingFacade.getMeetings(Mockito.anyString(),Mockito.any(LocalDate.class))).thenReturn(responseFromFacade);
+        ResponseEntity responseFromGetMeetings = meetingController.getMeetingsOfEmployee(employeeId,date);
         assertNotNull(responseFromGetMeetings);
         assertEquals(200,responseFromGetMeetings.getStatusCodeValue());
         Response returnedResponseFromController = (Response) responseFromGetMeetings.getBody();

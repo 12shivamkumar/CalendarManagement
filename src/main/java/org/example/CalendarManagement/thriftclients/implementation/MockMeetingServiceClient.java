@@ -1,6 +1,5 @@
 package org.example.CalendarManagement.thriftclients.implementation;
 
-import org.apache.thrift.TException;
 import org.example.CalendarManagement.thriftclients.interfaces.MeetingServiceClient;
 import org.example.CalendarThriftConfiguration.*;
 import org.springframework.context.annotation.Profile;
@@ -60,7 +59,7 @@ public class MockMeetingServiceClient implements MeetingServiceClient {
     }
 
     @Override
-    public List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId) {
+    public List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId, Date customDate) {
         if(employeeId.equals("abc-15")){
             throw new RuntimeException("mocking internal server error");
         }

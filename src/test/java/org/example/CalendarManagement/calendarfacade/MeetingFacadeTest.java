@@ -1,10 +1,7 @@
 package org.example.CalendarManagement.calendarfacade;
 
-import org.apache.thrift.TException;
 import org.example.CalendarManagement.api.Response;
 import org.example.CalendarManagement.api.request.AddMeetingDataRequest;
-import org.example.CalendarManagement.calendarpersistence.model.MeetingRoom;
-import org.example.CalendarManagement.calendarpersistence.repository.EmployeeRepository;
 import org.example.CalendarManagement.calendarpersistence.repository.MeetingRoomRepository;
 import org.example.CalendarManagement.calendarservice.implementation.MeetingRoomService;
 import org.example.CalendarManagement.thriftclients.interfaces.MeetingServiceClient;
@@ -76,6 +73,7 @@ class MeetingFacadeTest {
     @Test
     public void getMeetings_fetchedMeetingDetailsSuccessfully(){
         String employeeId = "xyz-12";
+        LocalDate date = LocalDate.of(2022,8,7);
         List<EmployeeMeetingDetails> employeeMeetingDetails = new ArrayList<>();
         employeeMeetingDetails.add(0, new EmployeeMeetingDetails(
                 2,
@@ -89,8 +87,8 @@ class MeetingFacadeTest {
                 true,
                 2
         ));
-        Mockito.when(meetingServiceClient.getEmployeeMeetingDetails(employeeId)).thenReturn(employeeMeetingDetails);
-        Response responseFromFacade= meetingFacade.getMeetings(employeeId);
+        Mockito.when(meetingServiceClient.getEmployeeMeetingDetails(Mockito.anyString(),Mockito.any(Date.class))).thenReturn(employeeMeetingDetails);
+        Response responseFromFacade= meetingFacade.getMeetings(employeeId,date);
         assertNotNull(responseFromFacade);
         List<MeetingsOfEmployee> recordedResponse = (List<MeetingsOfEmployee>) responseFromFacade.getData();
         assertEquals(2,recordedResponse.get(0).getMeetId());
@@ -98,6 +96,7 @@ class MeetingFacadeTest {
     @Test
     public void getMeetings_fetchedMeetingDetailsFailed(){
         String employeeId = "xyz-12";
+        LocalDate date = LocalDate.of(2022,8,7);
         List<EmployeeMeetingDetails> employeeMeetingDetails = new ArrayList<>();
         employeeMeetingDetails.add(0, new EmployeeMeetingDetails(
                 2,
@@ -111,8 +110,8 @@ class MeetingFacadeTest {
                 true,
                 2
         ));
-        Mockito.when(meetingServiceClient.getEmployeeMeetingDetails(employeeId)).thenThrow(RuntimeException.class);
-        assertThrows(RuntimeException.class,()->meetingFacade.getMeetings(employeeId));
+        Mockito.when(meetingServiceClient.getEmployeeMeetingDetails(Mockito.anyString(),Mockito.any(Date.class))).thenThrow(RuntimeException.class);
+        assertThrows(RuntimeException.class,()->meetingFacade.getMeetings(employeeId,date));
     }
 
 }

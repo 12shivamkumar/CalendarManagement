@@ -142,8 +142,9 @@ public class MeetingControllerIT extends BaseIntegrationTest
     @Test
     public void getMeetingsOfEmployeeTestSuccess(){
         String employeeId = "abc-13";
+        String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
-        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId),HttpMethod.GET,httpEntity,Response.class);
+        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
         assertEquals(200,responseEntity.getStatusCodeValue());
         Response responseFromMeetingController = responseEntity.getBody();
         assertNotNull(responseFromMeetingController);
@@ -154,16 +155,18 @@ public class MeetingControllerIT extends BaseIntegrationTest
     @Test
     public void getMeetingsOfEmployeeTestFail_failedValidation() {
         String employeeId = "abc-20";
+        String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
-        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId),HttpMethod.GET,httpEntity,Response.class);
+        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
         assertEquals(400,responseEntity.getStatusCodeValue());
 
     }
     @Test
     public void getMeetingsOfEmployeeTestFail_internalServerError() {
         String employeeId = "abc-15";
+        String date = LocalDate.of(2022,8,2).toString();
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
-        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId),HttpMethod.GET,httpEntity,Response.class);
+        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
         assertEquals(500,responseEntity.getStatusCodeValue());
 
     }

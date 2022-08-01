@@ -2,7 +2,6 @@ package org.example.CalendarManagement.calendarfacade;
 
 import org.example.CalendarManagement.api.Response;
 import org.example.CalendarManagement.api.request.AddMeetingDataRequest;
-import org.example.CalendarManagement.calendarpersistence.model.MeetingRoom;
 import org.example.CalendarManagement.calendarpersistence.repository.EmployeeRepository;
 import org.example.CalendarManagement.calendarpersistence.repository.MeetingRoomRepository;
 import org.example.CalendarManagement.calendarservice.implementation.MeetingRoomService;
@@ -17,9 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class MeetingFacade {
@@ -56,9 +54,10 @@ public class MeetingFacade {
         return response;
     }
 
-    public Response getMeetings(String employeeId) {
+    public Response getMeetings(String employeeId, LocalDate customDate) {
         try {
-            List<EmployeeMeetingDetails> meetingsOfEmployeeForToday = meetingServiceClient.getEmployeeMeetingDetails(employeeId);
+            Date date = new Date(customDate.getDayOfMonth(),customDate.getMonthValue(),customDate.getYear());
+            List<EmployeeMeetingDetails> meetingsOfEmployeeForToday = meetingServiceClient.getEmployeeMeetingDetails(employeeId,date );
             List<MeetingsOfEmployee> meetingsOfEmployee = EmployeeMeetingDetailsToMeetingsOfEmployee.map(meetingsOfEmployeeForToday);
             return new Response(null, meetingsOfEmployee);
         } catch (Exception ex) {

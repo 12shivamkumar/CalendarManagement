@@ -8,6 +8,7 @@ import org.example.CalendarManagement.calendarpersistence.repository.EmployeeRep
 import org.example.CalendarManagement.thriftobjectmappers.AddMeetingToEmployeeAvailabilityMapper;
 import org.example.CalendarThriftConfiguration.EmployeeAvailabilityDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @RestController
 @Validated
@@ -124,13 +126,13 @@ public class MeetingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getMeetingsOfEmployee(@NotNull(message = "employeeId cannot be null")@PathVariable(name = "id") String employeeId){
+    public ResponseEntity<Response> getMeetingsOfEmployee(@NotNull(message = "employeeId cannot be null")@PathVariable(name = "id") String employeeId, @RequestParam(name = "date")@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate customDate){
         ValidateResponse validEmployeeId = validateEmployeeId.checkEmployeeId(employeeId);
         if(!validEmployeeId.isValid()){
             Response invalidRequestResponse = new Response(validEmployeeId.getMessage(),null);
             return new ResponseEntity<>(invalidRequestResponse,HttpStatus.BAD_REQUEST);
         }
-        Response getMeetings = meetingFacade.getMeetings(employeeId);
+        Response getMeetings = meetingFacade.getMeetings(employeeId,customDate );
         return new ResponseEntity<Response>(getMeetings,HttpStatus.OK);
     }
 }

@@ -1,9 +1,7 @@
 package org.example.CalendarManagement.thriftclients.interfaces;
 
 import org.example.CalendarThriftConfiguration.*;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -22,7 +20,8 @@ public interface MeetingServiceClient {
 
     boolean meetingRoomAvailable(MeetingRoomAvailableDataRequest meetingRoomAvailableDataRequest);
 
-    List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId);
+    List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId, Date customDate);
+
 
     String isAlive();
 

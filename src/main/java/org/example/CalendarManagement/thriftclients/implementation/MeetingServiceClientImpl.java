@@ -3,7 +3,6 @@ package org.example.CalendarManagement.thriftclients.implementation;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.THttpClient;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.example.CalendarManagement.calendarfacade.EmployeeFacade;
@@ -146,7 +145,7 @@ public class MeetingServiceClientImpl implements MeetingServiceClient
     }
 
     @Override
-    public List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId) {
+    public List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId, Date customDate) {
         try( TTransport transport = new TSocket("localhost",9090)) {
             transport.open();
 
@@ -154,7 +153,7 @@ public class MeetingServiceClientImpl implements MeetingServiceClient
 
             MeetingSvc.Client client = new MeetingSvc.Client(protocol);
 
-            List<EmployeeMeetingDetails> thriftResponse = client.getEmployeeMeetingDetails(employeeId);
+            List<EmployeeMeetingDetails> thriftResponse = client.getEmployeeMeetingDetails(employeeId,customDate);
 
             transport.close();
 
