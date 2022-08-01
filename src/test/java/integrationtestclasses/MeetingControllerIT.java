@@ -5,6 +5,7 @@ import org.example.CalendarManagement.api.Response;
 import org.example.CalendarManagement.api.request.AddMeetingDataRequest;
 import org.example.CalendarManagement.calendarpersistence.repository.MeetingRoomRepository;
 import org.example.CalendarThriftConfiguration.EmployeeMeetingDetails;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,6 +169,26 @@ public class MeetingControllerIT extends BaseIntegrationTest
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
         assertEquals(500,responseEntity.getStatusCodeValue());
-
     }
+
+//    @Test
+//    public void getMeetingsOfEmployeeTestFail_invalidPayload(){
+//        String employeeId = "abc-$3";
+//        String date = LocalDate.of(2022,8,2).toString();
+//        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
+//        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
+//        System.out.println(responseEntity.getBody().getError());
+//        assertEquals(400,responseEntity.getStatusCodeValue());
+//    }
+//
+//    @Test
+//    public void getMeetingsOfEmployeeTestFail_invalidDate() {
+//        String employeeId = "abc-12";
+//        String date = "2022-08";
+//        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
+//        ResponseEntity<Response> responseEntity = restTemplate.exchange(createURLWithPort("/meeting/"+employeeId+"?date="+date),HttpMethod.GET,httpEntity,Response.class);
+//        System.out.println(responseEntity.getBody().getError());
+//        assertEquals(400,responseEntity.getStatusCodeValue());
+//    }
+
 }

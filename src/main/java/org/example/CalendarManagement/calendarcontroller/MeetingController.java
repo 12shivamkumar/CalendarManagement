@@ -104,7 +104,6 @@ public class MeetingController {
       }
 
       ValidateResponse validateResponseValidateMeetingRoomAvailability = validateMeetingRoomAvailability.checkMeetingRoomAvailability(addMeetingDataRequest);
-
       if (!validateResponseValidateMeetingRoomAvailability.isValid()) {
           Response scheduleMeetingResponse = new Response(validateResponseValidateMeetingRoomAvailability.getMessage(), false);
           return new ResponseEntity<>(scheduleMeetingResponse, HttpStatus.BAD_REQUEST);

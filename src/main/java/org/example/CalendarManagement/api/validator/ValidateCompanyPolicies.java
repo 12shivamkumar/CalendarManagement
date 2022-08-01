@@ -31,7 +31,7 @@ public class ValidateCompanyPolicies {
             return new ValidateResponse("meeting starting time is after meeting end time", false);
         }
         else{
-            return new ValidateResponse("meeting won't be productive" , false);
+            return new ValidateResponse("meeting won't be productive because less than 30 minutes" , false);
         }
     }
 
@@ -45,7 +45,7 @@ public class ValidateCompanyPolicies {
             return new ValidateResponse("meeting is productive", true);
         }
         else {
-            return new ValidateResponse("meeting won't be productive" , false);
+            return new ValidateResponse("meeting outside office hours" , false);
         }
     }
 }

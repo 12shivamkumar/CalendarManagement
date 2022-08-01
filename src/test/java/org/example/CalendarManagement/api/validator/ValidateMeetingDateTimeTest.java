@@ -38,7 +38,7 @@ class ValidateMeetingDateTimeTest {
     @Test
     public void validCurrentTime()
     {
-        LocalDate date = LocalDate.of(2022,7,31);
+        LocalDate date = LocalDate.now();
         LocalTime startTime = LocalTime.of(10,30);
         ValidateResponse validateResponse = validateMeetingDateTime.checkMeetingDateTime(date , startTime);
         assertNotNull(validateResponse);

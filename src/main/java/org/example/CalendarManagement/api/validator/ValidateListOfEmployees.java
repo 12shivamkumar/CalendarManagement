@@ -31,7 +31,7 @@ public class ValidateListOfEmployees {
         for(String employeeId:listOfEmployeeId){
             ValidateResponse validateResponse = validateEmployeeId.checkEmployeeId(employeeId);
             if(!validateResponse.isValid()){
-                return new ValidateResponse("Not all employees exist in db",false);
+                return validateResponse;
             }
         }
 

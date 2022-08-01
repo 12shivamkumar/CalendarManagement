@@ -24,7 +24,7 @@ public class ValidateEmployeeAvailability
         if(employeesNotAvailable.size()>0){
             Set<String> employeeNotAvailable = new HashSet<>(employeesNotAvailable);
 
-            response = new ValidateResponse(employeeNotAvailable+"", false);
+            response = new ValidateResponse("These employees are busy"+employeeNotAvailable, false);
             return response;
         }
        return new ValidateResponse(null, true);

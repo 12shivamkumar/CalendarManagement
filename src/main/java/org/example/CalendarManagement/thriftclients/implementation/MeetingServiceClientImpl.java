@@ -10,6 +10,7 @@ import org.example.CalendarManagement.thriftclients.interfaces.MeetingServiceCli
 import org.example.CalendarThriftConfiguration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -19,170 +20,137 @@ import java.util.List;
 @Profile("!test")
 public class MeetingServiceClientImpl implements MeetingServiceClient
 {
+    @Autowired
+    ClientController clientController;
+
     Logger logger = LoggerFactory.getLogger(EmployeeFacade.class);
     @Override
     public boolean cancelMeetingForRemovedEmployee(String employeeId){
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             boolean thriftResponse = client.cancelMeetingOfRemovedEmployee(employeeId);
-
-            transport.close();
-
             return  thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw new RuntimeException(exception.getMessage());
         }
+        finally {
+            clientController.closeConnection();
+        }
     }
 
     @Override
     public boolean updateStatusForRemovedEmployee(String employeeId){
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             boolean thriftResponse = client.updateStatusOfRemovedEmployee(employeeId);
-
-            transport.close();
-
             return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public List<String> checkEmployeeAvailability(EmployeeAvailabilityDataRequest employeeAvailabilityDataRequest) {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             List<String> listOfEmployeeNotAvailable = client.checkEmployeeAvailability(employeeAvailabilityDataRequest);
-            transport.close();
-
             return listOfEmployeeNotAvailable;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public int addMeetingDetails(MeetingDetails meetingDetails) {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             int thriftResponse = client.addMeetingDetails(meetingDetails);
-
-            transport.close();
 
             return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public int findFreeMeetingRoom(FindFreeMeetingRoomDataRequest findFreeMeetingRoomDataRequest) {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             int thriftResponse = client.findFreeMeetingRoom(findFreeMeetingRoomDataRequest);
-
-            transport.close();
-
-            return thriftResponse;
+           return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public boolean meetingRoomAvailable(MeetingRoomAvailableDataRequest meetingRoomAvailableDataRequest) {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             boolean thriftResponse = client.meetingRoomAvailable(meetingRoomAvailableDataRequest);
-
-            transport.close();
-
             return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public List<EmployeeMeetingDetails> getEmployeeMeetingDetails(String employeeId, Date customDate) {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             List<EmployeeMeetingDetails> thriftResponse = client.getEmployeeMeetingDetails(employeeId,customDate);
-
-            transport.close();
-
-            return thriftResponse;
+          return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 
     @Override
     public String isAlive() {
-        try( TTransport transport = new TSocket("localhost",9090)) {
-            transport.open();
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            MeetingSvc.Client client = new MeetingSvc.Client(protocol);
-
+        try
+        {
+            MeetingSvc.Client client = clientController.getClient();
             String thriftResponse = client.isAlive();
-
-            transport.close();
-
-            return thriftResponse;
+         return thriftResponse;
         }catch (TException exception)
         {
             logger.error(exception.getMessage());
             throw  new RuntimeException(exception.getMessage());
+        }finally {
+            clientController.closeConnection();
         }
     }
 

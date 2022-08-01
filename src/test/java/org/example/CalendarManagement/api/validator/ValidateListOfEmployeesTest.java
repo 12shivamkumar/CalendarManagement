@@ -47,7 +47,7 @@ class ValidateListOfEmployeesTest {
         ValidateResponse validateResponse = validateListOfEmployees.checkIfEmployeeExistInSameOffice(listOfEmployee,2,"abc-11");
         assertNotNull(validateResponse);
         assertFalse(validateResponse.isValid());
-        assertEquals("Not all employees exist in db",validateResponse.getMessage());
+        assertEquals("Employee Not in Db",validateResponse.getMessage());
     }
 
     @Test
