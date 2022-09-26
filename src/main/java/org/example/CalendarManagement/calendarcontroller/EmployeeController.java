@@ -87,4 +87,11 @@ public class EmployeeController {
         }
 
     }
+
+    @PostMapping("/validate")
+    public ResponseEntity<Response> checkingWebHook()
+    {
+        Response response = new Response("","Web Hook is Working Correctly");
+        return new ResponseEntity<Response>(response,HttpStatus.CREATED);
+    }
 }
