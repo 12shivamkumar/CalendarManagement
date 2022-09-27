@@ -44,4 +44,8 @@ public class EmployeeFacade {
       return removedEmployee;
     }
 
+    public String isAlive()
+    {
+        return "";
+    }
 }

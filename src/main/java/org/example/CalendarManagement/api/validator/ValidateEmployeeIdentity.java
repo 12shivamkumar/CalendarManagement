@@ -45,4 +45,9 @@ public class ValidateEmployeeIdentity {
 
         return validateResponse;
     }
+
+    public String isAlive()
+    {
+        return "";
+    }
 }
