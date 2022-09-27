@@ -47,4 +47,8 @@ public class EmployeeFacade {
         }
         return removedEmployeeResponse;
     }
+    public String isAlive()
+    {
+        return "";
+    }
 }

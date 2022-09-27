@@ -87,4 +87,10 @@ public class EmployeeController {
         }
 
     }
+
+    public String isAlive()
+    {
+        return "";
+    }
+
 }

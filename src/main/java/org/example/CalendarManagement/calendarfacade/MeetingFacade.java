@@ -66,4 +66,9 @@ public class MeetingFacade {
             throw new RuntimeException(ex.getMessage());
         }
     }
+
+    public String isAlive()
+    {
+        return "";
+    }
 }
